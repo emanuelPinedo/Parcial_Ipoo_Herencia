@@ -1,1 +1,3 @@
 https://github.com/emanuelPinedo/Parcial_Ipoo_Herencia.git
+github: emanuelPinedo
+Emanuel Pinedo FAI-4871
