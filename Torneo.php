@@ -26,70 +26,72 @@ class Torneo{
 
     //Ejercicio 4
     public function ingresarPartido($objEquipo1, $objEquipo2, $fecha, $tipoPartido){
-        if($objEquipo1 instanceof Fotbool && $objEquipo2 instanceof Fotbool || $objEquipo1 instanceof Basket && $objEquipo2 instanceof Basket){
-            if (!$this->mismaCategoriaYCantJug($objEquipo1, $objEquipo2)) {
-                $partido = null;
-            } else {
-                $id = count($this->getColecPartidos()) + 1;
-                if($tipoPartido === 'Futbol'){
-                    $partido = new Fotbool($id, $fecha, $objEquipo1, 0, $objEquipo2, 0);//0 son los goles
-                } elseif ($tipoPartido === 'Basquetbol'){
-                    $partido = new Basket($id, $fecha, $objEquipo1, 0, $objEquipo2, 0, 0);
-                }
-                $this->colecPartidos[] = $partido;
-            }
-            return $partido;
+        $objPartido = null;
+        $colPartidos = $this->getColecPartidos();
+        $cantidadPartidos = count($colPartidos);
+        if (
+        $objEquipo1->getObjCategoria()->getDescripcion() == $objEquipo2->getObjCategoria()->getDescripcion()
+        &&
+        $objEquipo1->getCantJugadores() == $objEquipo2->getCantJugadores()
+        ) {
+        if ($tipoPartido == "futbol") {
+            $objPartido = new Fotbool($cantidadPartidos, $fecha, $objEquipo1, 0, $objEquipo2, 0);
+            $colPartidos[] = $objPartido;
+            $this->setColecPartidos($colPartidos);
+        } else {
+            $objPartido = new Basket($cantidadPartidos, $fecha, $objEquipo1, 0, $objEquipo2, 0, 0);
+            $colPartidos[] = $objPartido;
+            $this->setColecPartidos($colPartidos);
         }
-    }
-
-    //private funcion para verificar q tengan mismas caracterísitcas
-    private function mismaCategoriaYCantJug($equipo1, $equipo2){
-        return ($equipo1->getObjCategoria()->getDescripcion() === $equipo2->getObjCategoria()->getDescripcion() &&
-                $equipo1->getCantJugadores() === $equipo2->getCantJugadores());
+        }
+        return $objPartido;
     }
 
     //Ejercicio 6
-    public function darGanadores($deporte) {
-        $colecPart = $this->getColecPartidos();
-        $equiposGanadores = [];
+    public function darGanadores($deporte){
+        $colGanadores = [];
+        $colPartidos = $this->getColecPartidos();
 
-        foreach ($colecPart as $partido) {
-            if ($deporte === 'Futbol' && $partido instanceof Fotbool) {
-                $equipoGanador = $partido->darEquipoGanador();
-                $equiposGanadores[] = $equipoGanador;
-            } elseif ($deporte === 'Basquetbol' && $partido instanceof Basket) {
-                $equipoGanador = $partido->darEquipoGanador();
-                $equiposGanadores[] = $equipoGanador;
+        if ($deporte == "futbol") {
+        foreach ($colPartidos as $partido) {
+            if ($partido instanceof Fotbool) {
+            $colGanadores[] = $partido->darEquipoGanador();
             }
         }
-
-        return $equiposGanadores;
-    }
-
-    public function imprimirArray($col){
-        $msj = "";
-        foreach ($col as $obj){
-            $msj .= $obj;
+        } else {
+        foreach ($colPartidos as $partido) {
+            if ($partido instanceof Basket) {
+            $colGanadores[] = $partido->darEquipoGanador();
+            }
         }
-        return $msj;
+        }
+        return $colGanadores;
     }
 
     //Ejercicio 7
     public function calcularPremioPartido($objPartido){
-        $coeficiente = $objPartido->coeficientePartido(); 
-        $partidoGanador = $objPartido->darEquipoGanador();
-        $importePremio = $this->getImportePremio(); 
-        $premioPartido = $coeficiente * $importePremio; 
-        $premio = ['EquipoGanador' => $partidoGanador, 'PremioPartido'=> $premioPartido];
-        return $premio;
+        $coeficientePartido = $objPartido->coeficientePartido();
+        $premioPartido = $coeficientePartido * $this->getImportePremio();
+        $equipoGanador = null;
+        if ($objPartido->getCantGolesE1() > $objPartido->getCantGolesE2()) {
+        $equipoGanador = $objPartido->getObjEquipo1();
+        } else {
+        $equipoGanador = $objPartido->getObjEquipo2();
+        }
+        $premioDelGanador = [
+        "equipoGanador" => $equipoGanador,
+        "premioPartido" => $premioPartido
+        ];
+        return $premioDelGanador;
     }
 
-    public function __toString() {
-        $cadena = "Partidos:\n";
-        foreach ($this->colecPartidos as $partido) {
-            $cadena .= $partido . "\n";
+    public function __toString(){
+        $cadena = "";
+        $cadena .= "Partidos: \n";
+        foreach ($this->getColecPartidos() as $partido) {
+        $cadena .= $partido . "\n\n";
         }
+        $cadena .= "Premio: " . $this->getImportePremio() . "\n";
         return $cadena;
     }
-
 }

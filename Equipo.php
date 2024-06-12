@@ -28,9 +28,7 @@ class Equipo{
         return $this->capitan;
     }
 
-
-
- public function setCantJugadores($cantJugadores){
+    public function setCantJugadores($cantJugadores){
          $this->cantJugadores= $cantJugadores;
     }
 
@@ -50,7 +48,7 @@ public function __toString(){
         //string $cadena
         $cadena = "Nombre: ".$this->getNombre()."\n";
         $cadena = $cadena. "capitan: ".$this->getCapitan()."\n";
-         $cadena = $cadena. "Categoria: ".$this->getObjCategoria()->getDescripcion()."\n";
+        $cadena = $cadena. "Categoria: ".$this->getObjCategoria()->getDescripcion()."\n";
         $cadena = $cadena. "Cant. Jugadores: ".$this->getCantJugadores()."\n";
         return $cadena;
          }

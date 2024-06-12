@@ -42,49 +42,45 @@ $partidoFutbol2 = new Fotbool(15, '2024-05-08', $objE3, 0, $objE4, 1);
 $partidoFutbol3 = new Fotbool(16, '2024-05-09', $objE5, 2, $objE6, 3);
 
 
-$partido1 =$objTorneo->ingresarPartido($objE5, $objE11, '2024-05-23', 'Futbol');
+//3.a. visualizar respuesta: 
+echo "\n\nEQUIPO INGRESADO: " . $objTorneo->ingresarPartido($objE5, $objE11, "2024-05-23", "futbol") . "\n";
+//visualizar cantidad equipos: 2 equipos por partido ->
+echo "\n\nEQUIPOS X PARTIDO: " . (count($objTorneo->getColecPartidos()) * 2) . "\n\n";
 
+//3.b. visualizar respuesta: 
+echo "\n\nEQUIPO INGRESADO: " . $objTorneo->ingresarPartido($objE11, $objE11, "2024-05-23", "basquetbol") . "\n";
+//visualizar cantidad equipos: 2 equipos por partido ->
+echo "\n\nEQUIPOS X PARTIDO: " . (count($objTorneo->getColecPartidos()) * 2) . "\n\n";
 
-$partido2 = $objTorneo->ingresarPartido($objE11, $objE11, '2024-05-23', 'basquetbol');
+// 3.c. visualizar respuesta: 
+echo "\n\nEQUIPO INGRESADO: " . $objTorneo->ingresarPartido($objE9, $objE10, "2024-05-25", "basquetbol") . "\n";
+//visualizar cantidad equipos: 2 equipos por partido ->
+echo "\n\nEQUIPOS X PARTIDO: " . (count($objTorneo->getColecPartidos()) * 2) . "\n\n";
 
-
-$partido3 = $objTorneo->ingresarPartido($objE9, $objE10, '2024-05-25', 'basquetbol');
-
-
-$ganadoresBasquetbol = $objTorneo->darGanadores('Basquetbol');
-echo "Ganadores de Basquetbol: ";
-foreach ($ganadoresBasquetbol as $ganador) {
-    echo $ganador->getNombre() . ", ";
-}
-echo "\n";
-
-$ganadoresFutbol = $objTorneo->darGanadores('Futbol');
-echo "Ganadores de Fútbol: ";
-foreach ($ganadoresFutbol as $ganador) {
-    echo $ganador->getNombre() . ", ";
-}
-echo "\n";
-
-if ($partido1) {
-    $premioPartido1 = $objTorneo->calcularPremioPartido($partido1);
-    echo "Premio de partido 1: " . $premioPartido1['PremioPartido'] . "\n";
-} else {
-    echo "No se pudo calcular el premio para el partido 1.\n";
+//3.d.
+//darGanadores
+$ganadores1 = $objTorneo->darGanadores("basquet");
+foreach ($ganadores1 as $equipoGanador) {
+  foreach ($equipoGanador as $ganador) {
+    echo "\n\nEQUIPO/S GANADOR/ES" . $ganador . "\n\n";
+  }
 }
 
-if ($partido2) {
-    $premioPartido2 = $objTorneo->calcularPremioPartido($partido2);
-    echo "Premio de partido 2: " . $premioPartido2['PremioPartido'] . "\n";
-} else {
-    echo "No se pudo calcular el premio para el partido 2.\n";
+//3.e.
+//darGanadores
+$ganadores2 = $objTorneo->darGanadores("futbol");
+foreach ($ganadores2 as $equipoGanador) {
+  foreach ($equipoGanador as $ganador) {
+    echo "\n\nEQUIPO/S GANADOR/ES" . $ganador . "\n\n";
+  }
 }
 
-if ($partido3) {
-    $premioPartido3 = $objTorneo->calcularPremioPartido($partido3);
-    echo "Premio de partido 3: " . $premioPartido3['PremioPartido'] . "\n";
-} else {
-    echo "No se pudo calcular el premio para el partido 3.\n";
+//3.f.
+//calcularPremioPartido con cada partido de colPartidos en torneo
+foreach ($objTorneo->getColecPartidos() as $partido) {
+  $objTorneo->calcularPremioPartido($partido);
 }
 
-echo $objTorneo;
+//4.
+echo "\n\n\n OBJETO TORNEO: " .  $objTorneo . "\n\n\n";
 ?>

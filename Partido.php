@@ -18,7 +18,6 @@ class Partido{
             $this->cantGolesE2 = $cantGolesE2;
             $this->coefBase = 0.5;
 
-
     }
 
     //OBSERVADORES
@@ -98,22 +97,11 @@ class Partido{
 
     //Ejercicio 5
     public function coeficientePartido(){
-        $equipo1 = $this->getObjEquipo1();
-        $equipo2 = $this->getObjEquipo2();
-        if($equipo1 instanceof Basket && $equipo2 instanceof Basket){
-            $cantInfraccion = $equipo1->getInfraccion() + $equipo2->getInfraccion();
-            $coefBase = $this->getCoefBase();
-            $coef = $coefBase - (0.75 * $cantInfraccion);
-        } else {
-            $cantGoles = $this->getCantGolesE1() + $this->getCantGolesE2();
-            if($equipo1->getObjCategoria()->getDescripcion() && $equipo2->getObjCategoria()->getDescripcion() === "Menores"){
-                $coef = 0.13 * $cantGoles * 22;
-            } elseif($equipo1->getObjCategoria()->getDescripcion() && $equipo2->getObjCategoria()->getDescripcion() === "Juveniles"){
-                $coef = 0.19 * $cantGoles * 22;
-            } else{
-                $coef = 0.27 * $cantGoles * 22;
-            }
-        }
+        $cantJugadores = $this->getObjEquipo1()->getCantJugadores() + $this->getObjEquipo2()->getCantJugadores();
+        $cantGoles = $this->getCantGolesE1() + $this->getCantGolesE2();
+    
+        $coef = $this->getCoefBase() * $cantGoles * $cantJugadores;
+    
         return $coef;
     }
 
